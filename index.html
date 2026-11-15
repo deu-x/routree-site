@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Routree — 旅の前・中・後を、1本の木でつなぐ</title>
+<meta name="robots" content="noindex">
+<meta name="description" content="Routree(ルーツリー)は、行きたい場所を種のようにまいて旅の計画を育て、当日の道のりを幹に、写真と日記を実にして残す、旅のしおりアプリです。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FAF8F3; --card:#FFFFFF; --line:#E6E1D6;
+    --ink:#2B2A26; --sub:#706B60;
+    --teal:#2F6A89; --teal2:#3A7A9C; --tealSoft:#E7F0F4;
+    --red:#E24B4A; --kraft:#C8A276; --photo:#E8913A;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--cream);color:var(--ink);
+    font-family:"Zen Kaku Gothic New",-apple-system,"Hiragino Sans","Hiragino Kaku Gothic ProN",sans-serif;
+    line-height:1.8;-webkit-font-smoothing:antialiased}
+  a{color:var(--teal)}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+  h1,h2,h3{font-family:"Zen Maru Gothic","Zen Kaku Gothic New",sans-serif;line-height:1.35;margin:0}
+
+  /* header */
+  header{position:sticky;top:0;z-index:10;background:rgba(250,248,243,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid transparent;transition:border-color .2s}
+  header.scrolled{border-bottom-color:var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-family:"Zen Maru Gothic",sans-serif;font-weight:700;font-size:20px;letter-spacing:.02em}
+  .brand svg{width:34px;height:34px;border-radius:8px}
+  .nav ul{list-style:none;display:flex;gap:22px;margin:0;padding:0;font-size:14px}
+  .nav ul a{color:var(--sub);text-decoration:none}
+  .nav ul a:hover{color:var(--teal)}
+
+  /* hero */
+  .hero{padding:72px 0 56px}
+  .hero .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+  .eyebrow{display:inline-block;font-size:13px;color:var(--teal);background:var(--tealSoft);padding:4px 12px;border-radius:999px;margin-bottom:18px;letter-spacing:.04em}
+  .hero h1{font-size:clamp(32px,5vw,50px);letter-spacing:.01em}
+  .hero h1 em{font-style:normal;color:var(--teal);position:relative;white-space:nowrap}
+  .hero h1 em::after{content:"";position:absolute;left:0;right:0;bottom:2px;height:8px;background:repeating-linear-gradient(90deg,var(--red) 0 10px,transparent 10px 16px);opacity:.55;border-radius:4px}
+  .hero p.lead{font-size:17px;color:var(--sub);margin:22px 0 30px;max-width:30em}
+  .store{display:inline-flex;align-items:center;gap:12px;background:var(--ink);color:#fff;border-radius:12px;padding:10px 20px 10px 16px;text-decoration:none;cursor:default}
+  .store svg{width:22px;height:22px}
+  .store small{display:block;font-size:11px;opacity:.75;line-height:1.2}
+  .store b{display:block;font-size:16px;line-height:1.3;font-weight:500}
+  .store-note{display:block;margin-top:10px;font-size:13px;color:var(--sub)}
+  .hero-art{position:relative;aspect-ratio:1/1;max-width:420px;justify-self:center;width:100%}
+  .hero-art svg{width:100%;height:100%}
+  .grow .trunk{stroke-dashoffset:400;animation:grow 2.2s ease-out .2s forwards}
+  .grow .b1{stroke-dashoffset:200;animation:grow 1.2s ease-out 1.4s forwards}
+  .grow .b2{stroke-dashoffset:200;animation:grow 1.2s ease-out 1.7s forwards}
+  .grow .b3{stroke-dashoffset:200;animation:grow 1.2s ease-out 2.0s forwards}
+  .grow .fruit,.grow .pin,.grow .sprout{opacity:0;animation:pop .5s ease-out forwards}
+  .grow .pin{animation-delay:2.2s}.grow .f1{animation-delay:2.4s}.grow .f2{animation-delay:2.6s}.grow .sprout{animation-delay:2.8s}
+  @keyframes grow{to{stroke-dashoffset:0}}
+  @keyframes pop{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){.grow *{animation:none!important;stroke-dashoffset:0!important;opacity:1!important}}
+
+  /* sections */
+  section{padding:72px 0}
+  .sec-title{text-align:center;margin-bottom:44px}
+  .sec-title h2{font-size:clamp(24px,3.4vw,32px)}
+  .sec-title p{color:var(--sub);margin:10px 0 0}
+
+  .stages{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .stage{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:28px 26px 26px;position:relative}
+  .stage .tag{font-size:12px;color:var(--sub);letter-spacing:.08em}
+  .stage h3{font-size:22px;margin:4px 0 14px;display:flex;align-items:center;gap:10px}
+  .stage h3 svg{width:30px;height:30px;flex:none}
+  .stage p{margin:0;color:var(--ink);font-size:15px}
+  .stage ul{margin:14px 0 0;padding-left:1.1em;color:var(--sub);font-size:14px}
+  .stage ul li{margin:2px 0}
+
+  .tree-band{background:linear-gradient(180deg,var(--cream),#F3EFE6)}
+  .band{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+  .band h2{font-size:clamp(24px,3.2vw,30px);margin-bottom:14px}
+  .band p{color:var(--sub);margin:0 0 12px}
+  .legend{display:grid;grid-template-columns:auto 1fr;gap:10px 14px;margin-top:20px;font-size:15px;align-items:center}
+  .legend svg{width:36px;height:20px}
+
+  .feats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .feat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 22px}
+  .feat h3{font-size:16px;margin-bottom:6px}
+  .feat p{margin:0;font-size:14px;color:var(--sub)}
+
+  .shots{display:flex;gap:22px;justify-content:center;flex-wrap:wrap}
+  .phone{width:200px;aspect-ratio:9/19.5;border-radius:34px;background:var(--card);border:1px solid var(--line);box-shadow:0 10px 30px rgba(60,50,30,.08);display:flex;align-items:center;justify-content:center;color:var(--sub);font-size:13px;text-align:center;padding:20px}
+
+  .support{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+  .box{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:28px}
+  .box h3{font-size:20px;margin-bottom:12px}
+  .mail{font-size:18px;font-weight:700;word-break:break-all}
+  details{border-top:1px solid var(--line);padding:12px 0}
+  details:first-of-type{border-top:none;padding-top:0}
+  summary{cursor:pointer;font-weight:500;list-style:none}
+  summary::-webkit-details-marker{display:none}
+  summary::before{content:"＋";color:var(--teal);margin-right:8px}
+  details[open] summary::before{content:"－"}
+  details p{margin:8px 0 0;color:var(--sub);font-size:14px}
+
+  footer{border-top:1px solid var(--line);padding:32px 0 48px;color:var(--sub);font-size:13px}
+  footer .row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+  footer a{color:var(--sub)}
+
+  .ph{background:#FFF3C4;border-radius:4px;padding:0 4px}
+
+  @media (max-width:820px){
+    .hero .grid,.band,.support{grid-template-columns:1fr}
+    .hero-art{max-width:300px;order:-1}
+    .stages,.feats{grid-template-columns:1fr}
+    .nav ul{gap:14px;font-size:13px}
+    .nav ul li.hide-sm{display:none}
+    section{padding:56px 0}
+  }
+</style>
+</head>
+<body>
+
+<header id="top">
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="Routree トップへ">
+      <svg viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="ig" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#12639E"/><stop offset="1" stop-color="#28BEB8"/></linearGradient></defs><rect width="120" height="120" rx="28" fill="url(#ig)"/><path d="M34 106 C40 88 60 84 60 68 C60 60 61 54 62 48" stroke="#fff" stroke-width="6" stroke-dasharray="6 9" stroke-linecap="round" fill="none"/><path d="M59 76 C74 78 88 72 94 60" stroke="#fff" stroke-width="4.5" stroke-dasharray="4.5 8.5" stroke-linecap="round" fill="none"/><path d="M61 62 C48 58 38 50 36 40" stroke="#fff" stroke-width="4.5" stroke-dasharray="4.5 8.5" stroke-linecap="round" fill="none"/><path d="M62 46 C52 36 48 30 48 24 C48 16 54 11 62 11 C70 11 76 16 76 24 C76 30 72 36 62 46 Z" fill="#E24B4A"/><circle cx="62" cy="24" r="5" fill="#fff"/></svg>
+      Routree
+    </a>
+    <ul>
+      <li class="hide-sm"><a href="#features">できること</a></li>
+      <li><a href="#support">サポート</a></li>
+      <li><a href="privacy.html">プライバシー</a></li>
+    </ul>
+  </div>
+</header>
+
+<main>
+  <!-- hero -->
+  <section class="hero">
+    <div class="wrap grid">
+      <div>
+        <span class="eyebrow">旅のしおりアプリ ・ iPhone ・ β版サイト</span>
+        <h1>旅の前・中・後を、<br><em>1本の木</em>でつなぐ。</h1>
+        <p class="lead">行きたい場所を種のようにまいて、計画を育てる。当日の道のりは幹になり、写真と日記は実になる。Routree は、旅をひとつの木として残すアプリです。</p>
+        <a class="store" aria-disabled="true">
+          <svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M16.4 12.6c0-2.4 2-3.6 2.1-3.6-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.7.9-.8 0-1.9-.8-3.2-.8-1.6 0-3.1 1-4 2.4-1.7 3-.4 7.4 1.2 9.8.8 1.2 1.8 2.5 3 2.4 1.2 0 1.7-.8 3.1-.8 1.5 0 1.9.8 3.2.8 1.3 0 2.2-1.2 3-2.4.9-1.4 1.3-2.7 1.3-2.8 0 0-2.5-1-2.5-4zM14 5.4c.7-.8 1.1-1.9 1-3-1 0-2.1.7-2.8 1.5-.6.7-1.2 1.8-1 2.9 1.1.1 2.1-.6 2.8-1.4z"/></svg>
+          <span><small>まもなく</small><b>App Store で公開</b></span>
+        </a>
+        <span class="store-note">いまは開発中です。公開したらここからダウンロードできます。</span>
+      </div>
+
+      <div class="hero-art" aria-hidden="true">
+        <svg viewBox="0 0 400 400" class="grow">
+          <circle cx="200" cy="200" r="180" fill="#F1ECE1"/>
+          <!-- ground -->
+          <path d="M70 330 Q200 310 330 330" stroke="#E0D8C8" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <!-- trunk (traveled road) -->
+          <path class="trunk" d="M200 330 C196 290 214 262 206 232 C198 202 212 176 204 140 C200 120 202 104 200 92" stroke="#2F6A89" stroke-width="12" stroke-linecap="round" fill="none" stroke-dasharray="400"/>
+          <!-- branches -->
+          <path class="b1" d="M207 245 C236 240 262 226 276 204" stroke="#2F6A89" stroke-width="7" stroke-linecap="round" fill="none" stroke-dasharray="200"/>
+          <path class="b2" d="M203 196 C176 192 152 178 140 156" stroke="#2F6A89" stroke-width="7" stroke-linecap="round" fill="none" stroke-dasharray="200"/>
+          <!-- seed branch (not taken) -->
+          <path class="b3" d="M206 160 C232 150 252 132 262 112" stroke="#9AA9B0" stroke-width="5" stroke-linecap="round" fill="none" stroke-dasharray="3 9"/>
+          <circle class="fruit" cx="262" cy="110" r="7" fill="none" stroke="#9AA9B0" stroke-width="3"/>
+          <!-- fruits = photos -->
+          <circle class="fruit f1" cx="278" cy="200" r="12" fill="#E8913A"/>
+          <circle class="fruit f2" cx="138" cy="152" r="12" fill="#E8913A"/>
+          <!-- sprout = detour -->
+          <g class="sprout" transform="translate(212 290)">
+            <path d="M0 0 C10 -4 18 -12 18 -22 C8 -20 2 -12 0 0Z" fill="#6FA86B"/>
+            <path d="M0 0 C-6 -2 -14 -8 -14 -16 C-6 -15 -1 -9 0 0Z" fill="#8CBF86"/>
+          </g>
+          <!-- pin -->
+          <g class="pin" transform="translate(200 92)">
+            <path d="M0 0 C-14 -14 -20 -24 -20 -34 C-20 -46 -11 -54 0 -54 C11 -54 20 -46 20 -34 C20 -24 14 -14 0 0Z" fill="#E24B4A"/>
+            <circle cx="0" cy="-34" r="7" fill="#fff"/>
+          </g>
+          <!-- start ring -->
+          <circle cx="200" cy="332" r="9" fill="#FAF8F3" stroke="#2F6A89" stroke-width="5"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- three stages -->
+  <section id="features">
+    <div class="wrap">
+      <div class="sec-title">
+        <h2>旅の3つの場面で、ひとつの木を育てる</h2>
+        <p>計画から思い出まで、同じ画面がそのままつながります。</p>
+      </div>
+      <div class="stages">
+        <article class="stage">
+          <span class="tag">旅の前</span>
+          <h3><svg viewBox="0 0 30 30" aria-hidden="true"><path d="M7 11 L9 26 L21 26 L23 11 Z" fill="#C8A276"/><path d="M6 9 H24 V12 H6Z" fill="#A9855A"/><circle cx="15" cy="18" r="2.6" fill="#2F6A89"/></svg>種をまく</h3>
+          <p>行きたい場所を、日にちも順番も決めずに「種袋」へ。地図でまとまりを見ながら、日ごとに振り分けて予定を育てます。</p>
+          <ul>
+            <li>場所の検索と地図で種をまく</li>
+            <li>決まっている予定は、そのまま入れてもOK</li>
+            <li>ルートA・Bを並べて比べる</li>
+          </ul>
+        </article>
+        <article class="stage">
+          <span class="tag">旅の最中</span>
+          <h3><svg viewBox="0 0 30 30" aria-hidden="true"><path d="M15 27 C14 21 17 17 15 12 C14 9 15 6 15 4" stroke="#2F6A89" stroke-width="3.2" stroke-linecap="round" fill="none"/><circle cx="15" cy="27" r="2.4" fill="#FAF8F3" stroke="#2F6A89" stroke-width="2"/></svg>幹を伸ばす</h3>
+          <p>「出発する」「着いた」を親指ひとつで。通った道がそのまま幹になっていきます。</p>
+          <ul>
+            <li>着いたら、次までの時間を道路状況で計算し直し</li>
+            <li>サービスエリアなどの寄り道もワンタップで</li>
+            <li>電車は時刻表どおりに自動で記録</li>
+          </ul>
+        </article>
+        <article class="stage">
+          <span class="tag">旅のあと</span>
+          <h3><svg viewBox="0 0 30 30" aria-hidden="true"><path d="M15 27 V10" stroke="#2F6A89" stroke-width="3" stroke-linecap="round"/><path d="M15 17 C19 16 22 13 23 10" stroke="#2F6A89" stroke-width="2.4" stroke-linecap="round" fill="none"/><circle cx="23" cy="10" r="3.4" fill="#E8913A"/><circle cx="15" cy="7" r="3.4" fill="#E8913A"/></svg>思い出の木</h3>
+          <p>写真と日記が実のように幹につき、旅が一本の木として残ります。行かなかった場所は種として、次の旅へ。</p>
+          <ul>
+            <li>日ごとの木と、旅行ごとの小さな林</li>
+            <li>「行かなかった」場所は種袋へ</li>
+            <li>旅の記録を画像にして共有</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- tree legend -->
+  <section class="tree-band">
+    <div class="wrap band">
+      <div>
+        <h2>通らなかった道も、消さずに残す。</h2>
+        <p>旅の計画では、行けなかった場所や選ばなかったルートが必ず出てきます。Routree ではそれを消さずに「種」として残し、次の旅の計画にまた植えられます。</p>
+        <p>同じ予定なら、いつも同じ形の木に。旅を重ねるほど、木が並んで森になっていきます。</p>
+        <div class="legend">
+          <svg viewBox="0 0 36 20" aria-hidden="true"><path d="M2 10 H34" stroke="#2F6A89" stroke-width="5" stroke-linecap="round"/></svg><span><b>幹</b>　実際に通った道</span>
+          <svg viewBox="0 0 36 20" aria-hidden="true"><path d="M2 10 H34" stroke="#2F6A89" stroke-width="3" stroke-linecap="round"/><circle cx="34" cy="10" r="3" fill="#2F6A89"/></svg><span><b>枝</b>　立ち寄ったスポット</span>
+          <svg viewBox="0 0 36 20" aria-hidden="true"><circle cx="18" cy="10" r="7" fill="#E8913A"/></svg><span><b>実</b>　写真と日記</span>
+          <svg viewBox="0 0 36 20" aria-hidden="true"><path d="M2 10 H30" stroke="#9AA9B0" stroke-width="3" stroke-dasharray="2 5" stroke-linecap="round"/><circle cx="32" cy="10" r="3" fill="none" stroke="#9AA9B0" stroke-width="2"/></svg><span><b>点線の枝</b>　種(行かなかった場所・選ばなかったルート)</span>
+          <svg viewBox="0 0 36 20" aria-hidden="true"><g transform="translate(18 16)"><path d="M0 0 C6 -2 10 -7 10 -13 C4 -12 1 -7 0 0Z" fill="#6FA86B"/><path d="M0 0 C-4 -1 -8 -5 -8 -10 C-3 -9 -1 -5 0 0Z" fill="#8CBF86"/></g></svg><span><b>双葉</b>　寄り道</span>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <svg viewBox="0 0 400 300">
+          <path d="M40 260 Q200 248 360 260" stroke="#E0D8C8" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <!-- three small trees = a forest -->
+          <g transform="translate(90 0)">
+            <path d="M0 260 C-3 230 6 210 0 180 C-3 165 0 150 0 140" stroke="#2F6A89" stroke-width="7" stroke-linecap="round" fill="none"/>
+            <path d="M1 210 C18 206 30 196 36 184" stroke="#2F6A89" stroke-width="4" stroke-linecap="round" fill="none"/>
+            <circle cx="36" cy="182" r="8" fill="#E8913A"/>
+            <path d="M0 170 C-16 166 -26 156 -30 144" stroke="#9AA9B0" stroke-width="3" stroke-dasharray="2 6" stroke-linecap="round" fill="none"/>
+          </g>
+          <g transform="translate(200 0)">
+            <path d="M0 260 C-4 220 8 190 0 150 C-3 130 0 110 0 96" stroke="#2F6A89" stroke-width="8" stroke-linecap="round" fill="none"/>
+            <path d="M2 220 C24 214 40 200 46 184" stroke="#2F6A89" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+            <path d="M0 172 C-22 168 -38 154 -44 136" stroke="#2F6A89" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+            <circle cx="46" cy="182" r="9" fill="#E8913A"/><circle cx="-44" cy="134" r="9" fill="#E8913A"/>
+            <path d="M1 128 C20 122 32 110 38 96" stroke="#9AA9B0" stroke-width="3" stroke-dasharray="2 6" stroke-linecap="round" fill="none"/>
+            <g transform="translate(6 244)"><path d="M0 0 C7 -3 12 -9 12 -16 C5 -15 1 -9 0 0Z" fill="#6FA86B"/><path d="M0 0 C-5 -1 -10 -6 -10 -12 C-4 -11 -1 -6 0 0Z" fill="#8CBF86"/></g>
+            <g transform="translate(0 96)"><path d="M0 0 C-10 -10 -14 -17 -14 -24 C-14 -32 -8 -38 0 -38 C8 -38 14 -32 14 -24 C14 -17 10 -10 0 0Z" fill="#E24B4A"/><circle cx="0" cy="-24" r="5" fill="#fff"/></g>
+          </g>
+          <g transform="translate(310 0)">
+            <path d="M0 260 C-2 236 4 220 0 196 C-2 186 0 176 0 168" stroke="#2F6A89" stroke-width="6" stroke-linecap="round" fill="none"/>
+            <path d="M0 214 C-14 210 -22 202 -26 192" stroke="#2F6A89" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+            <circle cx="-26" cy="190" r="7" fill="#E8913A"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- other features -->
+  <section>
+    <div class="wrap">
+      <div class="sec-title">
+        <h2>旅に必要なものを、ひとつに</h2>
+      </div>
+      <div class="feats">
+        <div class="feat"><h3>経費と精算</h3><p>誰が何を払ったかを記録して、最後に誰が誰にいくら払えばいいかを計算。レシート風の画像でも出せます。</p></div>
+        <div class="feat"><h3>持ち物リスト</h3><p>旅行ごとに、持っていく物をチェック。前の旅のリストも使い回せます。</p></div>
+        <div class="feat"><h3>チケット</h3><p>予約やチケットの画面を、その日の予定といっしょに。</p></div>
+        <div class="feat"><h3>日記と写真</h3><p>その日の一言や日記を時刻つきで。写真はスポットに付けると、木の実になります。</p></div>
+        <div class="feat"><h3>日帰りにも</h3><p>日帰りの旅は、日にちを選ばずにすぐ予定を作れます。</p></div>
+        <div class="feat"><h3>旅の記録を共有</h3><p>回ったスポットと時刻を、1枚の画像にして送れます。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- screenshots -->
+  <section style="padding-top:24px">
+    <div class="wrap">
+      <div class="sec-title"><h2>画面</h2><p>公開前の画面です。変わることがあります。</p></div>
+      <div class="shots">
+        <div class="phone">旅行一覧<br>(画像を入れる)</div>
+        <div class="phone">日のページ<br>(画像を入れる)</div>
+        <div class="phone">思い出の木<br>(画像を入れる)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- support -->
+  <section id="support">
+    <div class="wrap">
+      <div class="sec-title"><h2>サポート</h2><p>ご質問・不具合のご連絡は、こちらからお願いします。</p></div>
+      <div class="support">
+        <div class="box">
+          <h3>お問い合わせ</h3>
+          <p>メールでお送りください。いただいた内容は、返信と不具合の調査だけに使います。</p>
+          <p class="mail">メールアドレスは準備中です</p>
+          <p style="color:var(--sub);font-size:14px;margin:0">個人で開発しているため、お返事に数日かかることがあります。不具合のときは、iPhone の機種・iOS のバージョン・起きたときの操作を書いていただけると助かります。</p>
+        </div>
+        <div class="box">
+          <h3>よくある質問</h3>
+          <details><summary>旅行のデータはどこに保存されますか?</summary><p>お使いの iPhone の中に保存されます。開発者のサーバーには送られません。アプリを削除するとデータも消えますので、ご注意ください。</p></details>
+          <details><summary>位置情報は何に使いますか?</summary><p>近くの場所を探す、寄り道を記録する、次の場所までの時間を計算するときに使います。アプリを使っている間だけです。</p></details>
+          <details><summary>料金はかかりますか?</summary><p>無料でお使いいただけます。画面の一部に、旅行に役立つおすすめ(PR)を表示することがあります。</p></details>
+          <details><summary>iPad や Android で使えますか?</summary><p>いまは iPhone だけです。</p></details>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap row">
+    <span>© 2026 Routree</span>
+    <span><a href="privacy.html">プライバシーポリシー</a> ・ <a href="#support">サポート</a></span>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var h=document.querySelector('header');
+    function f(){ if(window.scrollY>8){h.classList.add('scrolled')}else{h.classList.remove('scrolled')} }
+    window.addEventListener('scroll',f,{passive:true}); f();
+  })();
+</script>
+</body>
+</html>
