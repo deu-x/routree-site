@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>使い方 — Routree</title>
+<meta name="robots" content="noindex">
+<meta name="description" content="Routree(ルーツリー)の使い方。旅行の作り方、種のまき方、当日の使い方、経費と精算、思い出の共有まで。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{--cream:#FAF8F3;--card:#fff;--line:#E6E1D6;--ink:#2B2A26;--sub:#706B60;--teal:#2F6A89;--tealSoft:#E7F0F4}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--cream);color:var(--ink);font-family:"Zen Kaku Gothic New",-apple-system,"Hiragino Sans",sans-serif;line-height:1.9;-webkit-font-smoothing:antialiased}
+  a{color:var(--teal)}
+  .wrap{max-width:960px;margin:0 auto;padding:0 24px}
+  header{border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-family:"Zen Maru Gothic",sans-serif;font-weight:700;font-size:20px}
+  .brand svg{width:32px;height:32px;border-radius:8px}
+  .nav a.back{font-size:14px;color:var(--sub);text-decoration:none}
+  h1,h2,h3{font-family:"Zen Maru Gothic",sans-serif;line-height:1.4}
+  h1{font-size:30px;margin:48px 0 8px}
+  .lead{color:var(--sub);margin:0 0 28px}
+  .toc{background:var(--tealSoft);border-radius:16px;padding:18px 24px;margin-bottom:24px}
+  .toc ol{margin:0;padding-left:1.4em;columns:2;column-gap:32px}
+  .toc li{font-size:15px;margin:2px 0}
+  .toc a{text-decoration:none}
+  .step{padding:40px 0;border-top:1px solid var(--line)}
+  .step h2{font-size:22px;margin:0 0 6px;display:flex;align-items:center;gap:12px}
+  .step h2 .no{flex:none;width:32px;height:32px;border-radius:50%;background:var(--teal);color:#fff;font-size:16px;display:flex;align-items:center;justify-content:center}
+  .step > p{margin:0 0 20px;color:var(--sub)}
+  .shots{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:24px}
+  figure{margin:0}
+  figure img{width:100%;max-width:300px;display:block;margin:0 auto;border-radius:28px;border:1px solid var(--line);box-shadow:0 10px 30px rgba(60,50,30,.08);background:var(--card)}
+  figcaption{font-size:14px;margin-top:12px}
+  figcaption b{display:block;font-family:"Zen Maru Gothic",sans-serif;font-size:15px;margin-bottom:2px}
+  .tip{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 18px;margin-top:20px;font-size:14px;color:var(--sub)}
+  .tip b{color:var(--ink)}
+  footer{border-top:1px solid var(--line);margin-top:24px;padding:28px 0 48px;color:var(--sub);font-size:13px}
+  footer a{color:var(--sub)}
+  @media (max-width:640px){.toc ol{columns:1}h1{font-size:26px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="index.html">
+      <svg viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="ig" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#12639E"/><stop offset="1" stop-color="#28BEB8"/></linearGradient></defs><rect width="120" height="120" rx="28" fill="url(#ig)"/><path d="M34 106 C40 88 60 84 60 68 C60 60 61 54 62 48" stroke="#fff" stroke-width="6" stroke-dasharray="6 9" stroke-linecap="round" fill="none"/><path d="M59 76 C74 78 88 72 94 60" stroke="#fff" stroke-width="4.5" stroke-dasharray="4.5 8.5" stroke-linecap="round" fill="none"/><path d="M61 62 C48 58 38 50 36 40" stroke="#fff" stroke-width="4.5" stroke-dasharray="4.5 8.5" stroke-linecap="round" fill="none"/><path d="M62 46 C52 36 48 30 48 24 C48 16 54 11 62 11 C70 11 76 16 76 24 C76 30 72 36 62 46 Z" fill="#E24B4A"/><circle cx="62" cy="24" r="5" fill="#fff"/></svg>
+      Routree
+    </a>
+    <a class="back" href="index.html">← トップへ</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <h1>使い方</h1>
+  <p class="lead">旅の前に計画を育てて、当日は道のりを幹にして、旅のあとは写真と日記を実にして残す。Routree の流れを、画面ごとに紹介します。</p>
+
+  <nav class="toc" aria-label="目次">
+    <ol>
+      <li><a href="#trip">旅行を作る</a></li>
+      <li><a href="#day">日の予定を組む</a></li>
+      <li><a href="#search">場所を探す</a></li>
+      <li><a href="#move">移動を決める</a></li>
+      <li><a href="#seed">種をまく・種袋</a></li>
+      <li><a href="#today">当日に使う</a></li>
+      <li><a href="#expense">経費と精算</a></li>
+      <li><a href="#memory">思い出を残す・共有する</a></li>
+    </ol>
+  </nav>
+
+  <section class="step" id="trip">
+    <h2><span class="no">1</span>旅行を作る</h2>
+    <p>旅行一覧の右上の「+」から、新しい旅行を作ります。</p>
+    <div class="shots">
+      <figure><img src="images/guide/01-trips.webp" alt="旅行一覧の画面" loading="lazy" width="300" height="652">
+        <figcaption><b>旅行一覧</b>これからの旅と、思い出になった旅が並びます。1日が1本の木になって、旅の形がひと目で分かります。</figcaption></figure>
+      <figure><img src="images/guide/02-new-trip.webp" alt="新しい旅行の画面" loading="lazy" width="300" height="652">
+        <figcaption><b>始め方を選ぶ</b>予定が決まっているなら「苗を植える」。行きたい場所から考えたいなら「種をまく」を選びます。</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="step" id="day">
+    <h2><span class="no">2</span>日の予定を組む</h2>
+    <p>日ごとのページで、行く場所を上から順に並べます。</p>
+    <div class="shots">
+      <figure><img src="images/guide/03-day.webp" alt="日のページ" loading="lazy" width="300" height="652">
+        <figcaption><b>日のページ</b>スポットの間の「+」で、あいだに場所を足せます。移動時間は自動で計算され、着く時刻が出ます。</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="step" id="search">
+    <h2><span class="no">3</span>場所を探す</h2>
+    <p>スポットを足すときは、名前で検索するか、カテゴリから近くの場所を探します。</p>
+    <div class="shots">
+      <figure><img src="images/guide/04-place-search.webp" alt="場所を検索する画面" loading="lazy" width="300" height="652">
+        <figcaption><b>場所を検索</b>前のスポットのあたりから、宿泊・食事・観光などで探せます。現在地や自宅、種袋の場所もすぐ選べます。</figcaption></figure>
+      <figure><img src="images/guide/04b-place-results.webp" alt="検索結果の地図と一覧" loading="lazy" width="300" height="652">
+        <figcaption><b>地図と一覧</b>近い順に並びます。地図を動かすと「このあたりで探す」で探し直せます。</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="step" id="move">
+    <h2><span class="no">4</span>移動を決める</h2>
+    <p>スポットの間の移動の札を押すと、移動手段と時間を変えられます。</p>
+    <div class="shots">
+      <figure><img src="images/guide/05-travel-edit.webp" alt="移動の編集画面" loading="lazy" width="300" height="652">
+        <figcaption><b>移動の編集</b>車・徒歩・自転車は、選ぶと経路から時間を計算します。計算のあとに手で直すこともできます。</figcaption></figure>
+      <figure><img src="images/guide/05b-train-flow.webp" alt="乗る駅を選ぶ画面" loading="lazy" width="300" height="652">
+        <figcaption><b>電車</b>行き先を選んで、乗る駅・降りる駅・時刻を入れます。行き先の近くの駅が候補に出ます。</figcaption></figure>
+    </div>
+    <div class="tip"><b>ひとこと:</b> 移動時間は目安です。道路や電車の状況で前後するので、余裕を持った計画がおすすめです。</div>
+  </section>
+
+  <section class="step" id="seed">
+    <h2><span class="no">5</span>種をまく・種袋</h2>
+    <p>まだ日が決まっていない「行きたい場所」は、種として種袋に入れておきます。</p>
+    <div class="shots">
+      <figure><img src="images/guide/07-seed-bag.webp" alt="種袋の画面" loading="lazy" width="300" height="652">
+        <figcaption><b>種袋</b>行きたい度合い(絶対行きたい・できれば・余裕があれば)を付けて、日に振り分けます。</figcaption></figure>
+      <figure><img src="images/guide/06-next-cards.webp" alt="次はどこへ?の候補カード" loading="lazy" width="300" height="652">
+        <figcaption><b>「次はどこへ?」</b>日の最後に、種袋から次の行き先の候補がカードで出ます。「ここに行く」で予定に植えられます。</figcaption></figure>
+      <figure><img src="images/guide/07b-later-bag.webp" alt="また今度の袋" loading="lazy" width="300" height="652">
+        <figcaption><b>また今度の袋</b>今回は行けなかった場所は、旅行をまたいで取っておけます。次の旅行で「この旅行へ」で持ってこられます。</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="step" id="today">
+    <h2><span class="no">6</span>当日に使う</h2>
+    <p>旅行の日になると、その日のページが「今日」になります。</p>
+    <div class="shots">
+      <figure><img src="images/guide/08-today.webp" alt="今日の画面" loading="lazy" width="300" height="652">
+        <figcaption><b>今日</b>着いたら記録、出るときは「出発する」。通った道が幹になっていきます。次の場所に着く時刻も見直されます。</figcaption></figure>
+    </div>
+    <div class="tip"><b>寄り道したときは:</b> 移動の途中で寄った場所も、あとから足せます。木には双葉の印で残ります。</div>
+  </section>
+
+  <section class="step" id="expense">
+    <h2><span class="no">7</span>経費と精算</h2>
+    <p>旅行のお金も、同じアプリで記録できます。</p>
+    <div class="shots">
+      <figure><img src="images/guide/09-expenses.webp" alt="経費の画面" loading="lazy" width="300" height="652">
+        <figcaption><b>経費</b>カテゴリごとの合計が出ます。車の旅なら、燃費とガソリン単価からガソリン代の見積もりも出せます。</figcaption></figure>
+      <figure><img src="images/guide/09b-settlement.webp" alt="精算の画面" loading="lazy" width="300" height="652">
+        <figcaption><b>精算</b>割り勘に入れる人を選ぶと、「誰が誰にいくら払うか」を出します。共通カードなどは別精算にできます。</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="step" id="memory">
+    <h2><span class="no">8</span>思い出を残す・共有する</h2>
+    <p>旅のあとは、写真と日記が木の実になります。</p>
+    <div class="shots">
+      <figure><img src="images/guide/10-memories.webp" alt="思い出の日記の画面" loading="lazy" width="300" height="652">
+        <figcaption><b>思い出</b>スポットごとの日記と、写真のアルバムで旅をふり返れます。</figcaption></figure>
+      <figure><img src="images/guide/11-share-sticker.webp" alt="画像で共有の画面" loading="lazy" width="300" height="652">
+        <figcaption><b>画像で共有</b>写真と木を1枚の画像にして、SNS のストーリーズや投稿に使えます。</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="step">
+    <h2>困ったときは</h2>
+    <p style="margin:0">ご質問や不具合のご連絡は、<a href="index.html#support">サポート</a>からお送りください。</p>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">© 2026 Routree ・ <a href="index.html">トップ</a> ・ <a href="guide.html">使い方</a> ・ <a href="privacy.html">プライバシーポリシー</a> ・ <a href="index.html#support">サポート</a></div>
+</footer>
+</body>
+</html>
